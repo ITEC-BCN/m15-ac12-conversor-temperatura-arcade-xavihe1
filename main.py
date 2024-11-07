@@ -1,43 +1,33 @@
-function menu(): number {
-    
-    opcio_usuari = game.askForNumber("1. Celsius a Fahrenhein; 2. Fahrenheit a Celsius", 1)
+def menu():
+    global opcio_usuari
+    opcio_usuari = game.ask_for_number("1. Celsius a Fahrenhein; 2. Fahrenheit a Celsius", 1)
     return opcio_usuari
-}
-
-function celsius_a_fahrenheit() {
-    
-    graus_celsius2 = game.askForNumber("Quins graus vols convertir a Fahrenheit?")
+def celsius_a_fahrenheit():
+    global graus_celsius2, graus_fahrenheit
+    graus_celsius2 = game.ask_for_number("Quins graus vols convertir a Fahrenheit?")
     graus_fahrenheit = graus_celsius2 * 9 / 5 + 32
-    console.log("$graus_celsius2 són $graus_fahrenheit")
-}
-
-function salutacio(opcio: number) {
-    if (opcio == 1) {
-        game.showLongText("Quins graus vols convertir a Fahrenheit?", DialogLayout.Top)
+    print("$graus_celsius2 són $graus_fahrenheit")
+def salutacio(opcio: number):
+    if opcio == 1:
+        game.show_long_text("Quins graus vols convertir a Fahrenheit?", DialogLayout.TOP)
         celsius_a_fahrenheit()
-    } else if (opcio == 2) {
-        game.showLongText("Quins graus vols convertir a Celsius?", DialogLayout.Top)
+    elif opcio == 2:
+        game.show_long_text("Quins graus vols convertir a Celsius?", DialogLayout.TOP)
         fahrenheit_a_celsius()
-    } else {
-        game.showLongText("Opció no vàlida", DialogLayout.Bottom)
-    }
-    
+    else:
+        game.show_long_text("Opció no vàlida", DialogLayout.BOTTOM)
     salutacio(menu())
-}
-
-function fahrenheit_a_celsius() {
-    
-    graus_fahrenheit2 = game.askForNumber("Quins graus vols convertir a Celsius?")
+def fahrenheit_a_celsius():
+    global graus_fahrenheit2, graus_celsius
+    graus_fahrenheit2 = game.ask_for_number("Quins graus vols convertir a Celsius?")
     graus_celsius = (graus_fahrenheit2 - 32) * 5 / 9
-    console.log("$graus_fahrenheit2 són $graus_celsius")
-}
-
-let graus_celsius = 0
-let graus_fahrenheit2 = 0
-let graus_fahrenheit = 0
-let graus_celsius2 = 0
-let opcio_usuari = 0
-scene.setBackgroundImage(img`
+    print("$graus_fahrenheit2 són $graus_celsius")
+graus_celsius = 0
+graus_fahrenheit2 = 0
+graus_fahrenheit = 0
+graus_celsius2 = 0
+opcio_usuari = 0
+scene.set_background_image(img("""
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
         9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
         9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -158,6 +148,6 @@ scene.setBackgroundImage(img`
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
-`)
-//  MAIN DE LA APP
+"""))
+# MAIN DE LA APP
 salutacio(menu())
