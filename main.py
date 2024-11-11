@@ -1,47 +1,39 @@
-graus_celsius = 0
-graus_fahrenheit = 0
-opcio_usuari = 0
-
 def menu():
     global opcio_usuari
     opcio_usuari = game.ask_for_number("1. Celsius a Fahrenhein; 2. Fahrenheit a Celsius", 1)
     return opcio_usuari
-
-def arrodoneix_dos_decimals(valor):
-    return int(valor * 100) / 100
-
-
-def celsius_a_fahrenheit(celsius):
-    graus_celsius2 = game.ask_for_number("Quins graus vols convertir a Fahrenheit?")
-    fahrenheit = (celsius * 9 / 5) + 32
-    return arrodoneix_dos_decimals(fahrenheit)
-
-
+def celsius_a_fahrenheit(celsius: number):
+    global fahrenheit2
+    fahrenheit2 = celsius * 9 / 5 + 32
+    return arrodoneix_dos_decimals(fahrenheit2)
+def fahrenheit_a_celsius(fahrenheit: number):
+    global celsius2
+    celsius2 = (fahrenheit - 32) * 5 / 9
+    return arrodoneix_dos_decimals(celsius2)
 def convertir_temperatura():
-    global graus_celsius, graus_fahrenheit, opcio_usuari
+    global graus_celsius, graus_fahrenheit
     if opcio_usuari == 1:
         # Conversió de Celsius a Fahrenheit
         graus_celsius = game.ask_for_number("Introdueix graus Celsius:")
         graus_fahrenheit = celsius_a_fahrenheit(graus_celsius)
-        game.show_long_text(str(graus_celsius) + " °C són " + str(graus_fahrenheit) + " °F", DialogLayout.BOTTOM)
+        game.show_long_text("" + str(graus_celsius) + " °C són " + ("" + str(graus_fahrenheit)) + " °F",
+            DialogLayout.BOTTOM)
     elif opcio_usuari == 2:
         # Conversió de Fahrenheit a Celsius
         graus_fahrenheit = game.ask_for_number("Introdueix graus Fahrenheit:")
         graus_celsius = fahrenheit_a_celsius(graus_fahrenheit)
-        game.show_long_text(str(graus_fahrenheit) + " °F són " + str(graus_celsius) + " °C", DialogLayout.BOTTOM)
+        game.show_long_text("" + str(graus_fahrenheit) + " °F són " + ("" + str(graus_celsius)) + " °C",
+            DialogLayout.BOTTOM)
     else:
         # Opció invàlida
         game.show_long_text("Opció no vàlida", DialogLayout.BOTTOM)
-
-
-def fahrenheit_a_celsius(fahrenheit):
-    graus_fahrenheit2 = game.ask_for_number("Quins graus vols convertir a Celsius?")
-    celsius = (fahrenheit - 32) * 5 / 9
-    return arrodoneix_dos_decimals(celsius)
-
-
-
-
+def arrodoneix_dos_decimals(valor: number):
+    return int(valor * 100) / 100
+graus_fahrenheit = 0
+graus_celsius = 0
+celsius2 = 0
+fahrenheit2 = 0
+opcio_usuari = 0
 scene.set_background_image(img("""
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
         9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -164,9 +156,69 @@ scene.set_background_image(img("""
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
 """))
-# MAIN DE LA APP
-while True:
-    salutacio = "Benvingut al convertidor de temperatura! Escull una opció per començar."
-    game.show_long_text(salutacio, DialogLayout.TOP)
-    opcio_usuari = menu()
-    convertir_temperatura()
+game.splash("\"Benvingut al convertidor de temperatura!!\"")
+graus_fahrenheit2 = 0
+graus_celsius2 = 0
+player1 = sprites.create(img("""
+        ......ffff..............
+            ....fff22fff............
+            ...fff2222fff...........
+            ..fffeeeeeefff..........
+            ..ffe222222eef..........
+            ..fe2ffffff2ef..........
+            ..ffffeeeeffff......ccc.
+            .ffefbf44fbfeff....cddc.
+            .ffefbf44fbfeff...cddc..
+            .fee4dddddd4eef.ccddc...
+            fdfeeddddd4eeffecddc....
+            fbffee4444ee4fddccc.....
+            fbf4f222222f1edde.......
+            fcf.f222222f44ee........
+            .ff.f445544f............
+            ....ffffffff............
+            .....ff..ff.............
+            ........................
+            ........................
+            ........................
+            ........................
+            ........................
+            ........................
+            ........................
+    """),
+    SpriteKind.player)
+player1.left = 0
+player1.z += 1000
+controller.player1.move_sprite(player1)
+ir_menu = sprites.create(img("""
+        ...bbbbbbbbbb...
+            ..b1111111111b..
+            .b111111111111b.
+            .b111111111111b.
+            .bddccccccccddb.
+            .bdc66666666cdb.
+            .bdc61d66666cdb.
+            .bdc6d666666cdb.
+            .bdc66666666cdb.
+            .bdc66666666cdb.
+            .bdc66666666cdb.
+            .bddccccccccddb.
+            .cbbbbbbbbbbbbc.
+            fccccccccccccccf
+            fbbbbbbbbbbbbbbf
+            fbcdddddddddddbf
+            fbcbbbbbbbbbbcbf
+            fbcbbbbbbbbbbcbf
+            fbccccccccccccbf
+            fbbbbbbbbbbbbbbf
+            fbffffffffffffbf
+            ffffffffffffffff
+    """),
+    SpriteKind.enemy)
+ir_menu.set_position(94, 71)
+
+def on_update_interval():
+    global opcio_usuari
+    if player1.overlaps_with(ir_menu):
+        opcio_usuari = menu()
+        convertir_temperatura()
+game.on_update_interval(1000, on_update_interval)
