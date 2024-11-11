@@ -1,42 +1,48 @@
+let salutacio: string;
+let graus_celsius = 0
+let graus_fahrenheit = 0
+let opcio_usuari = 0
 function menu(): number {
     
     opcio_usuari = game.askForNumber("1. Celsius a Fahrenhein; 2. Fahrenheit a Celsius", 1)
     return opcio_usuari
 }
 
-function celsius_a_fahrenheit() {
-    
-    graus_celsius2 = game.askForNumber("Quins graus vols convertir a Fahrenheit?")
-    graus_fahrenheit = graus_celsius2 * 9 / 5 + 32
-    console.log("$graus_celsius2 són $graus_fahrenheit")
+function arrodoneix_dos_decimals(valor: number): number {
+    return Math.trunc(valor * 100) / 100
 }
 
-function salutacio(opcio: number) {
-    if (opcio == 1) {
-        game.showLongText("Quins graus vols convertir a Fahrenheit?", DialogLayout.Top)
-        celsius_a_fahrenheit()
-    } else if (opcio == 2) {
-        game.showLongText("Quins graus vols convertir a Celsius?", DialogLayout.Top)
-        fahrenheit_a_celsius()
+function celsius_a_fahrenheit(celsius: number): number {
+    let graus_celsius2 = game.askForNumber("Quins graus vols convertir a Fahrenheit?")
+    let fahrenheit = celsius * 9 / 5 + 32
+    return arrodoneix_dos_decimals(fahrenheit)
+}
+
+function convertir_temperatura() {
+    
+    if (opcio_usuari == 1) {
+        //  Conversió de Celsius a Fahrenheit
+        graus_celsius = game.askForNumber("Introdueix graus Celsius:")
+        graus_fahrenheit = celsius_a_fahrenheit(graus_celsius)
+        game.showLongText("" + graus_celsius + " °C són " + ("" + graus_fahrenheit) + " °F", DialogLayout.Bottom)
+    } else if (opcio_usuari == 2) {
+        //  Conversió de Fahrenheit a Celsius
+        graus_fahrenheit = game.askForNumber("Introdueix graus Fahrenheit:")
+        graus_celsius = fahrenheit_a_celsius(graus_fahrenheit)
+        game.showLongText("" + graus_fahrenheit + " °F són " + ("" + graus_celsius) + " °C", DialogLayout.Bottom)
     } else {
+        //  Opció invàlida
         game.showLongText("Opció no vàlida", DialogLayout.Bottom)
     }
     
-    salutacio(menu())
 }
 
-function fahrenheit_a_celsius() {
-    
-    graus_fahrenheit2 = game.askForNumber("Quins graus vols convertir a Celsius?")
-    graus_celsius = (graus_fahrenheit2 - 32) * 5 / 9
-    console.log("$graus_fahrenheit2 són $graus_celsius")
+function fahrenheit_a_celsius(fahrenheit: number): number {
+    let graus_fahrenheit2 = game.askForNumber("Quins graus vols convertir a Celsius?")
+    let celsius = (fahrenheit - 32) * 5 / 9
+    return arrodoneix_dos_decimals(celsius)
 }
 
-let graus_celsius = 0
-let graus_fahrenheit2 = 0
-let graus_fahrenheit = 0
-let graus_celsius2 = 0
-let opcio_usuari = 0
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
         9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -160,4 +166,9 @@ scene.setBackgroundImage(img`
         7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
 `)
 //  MAIN DE LA APP
-salutacio(menu())
+while (true) {
+    salutacio = "Benvingut al convertidor de temperatura! Escull una opció per començar."
+    game.showLongText(salutacio, DialogLayout.Top)
+    opcio_usuari = menu()
+    convertir_temperatura()
+}
